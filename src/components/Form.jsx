@@ -1,28 +1,55 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import useOriginalCurrency from "../hooks/useOriginalCurrency"
 
-export const Form = () => {
-    const [OrigianalCurrency]= useOriginalCurrency('hello')
-    const [ConvertingCurrency]= useOriginalCurrency('surprise')
+export const Form = ({setConverter}) => {
+    const[currency, setCurrency]=useState([])
+    const[error, setError]= useState(false)
+    const [selectedOne,OrigianalCurrency]= useOriginalCurrency('From',currency)
+    const [selectedTwo,ConvertingCurrency]= useOriginalCurrency('To', currency)
 
-    useEffect(()=>{
+    console.log(selectedOne,selectedTwo);
+    
+useEffect(()=>{
         const readAPI= async()=>{
             const key='cur_live_7d5HQyZySODXOjBb0RgjBKs8yybZkmqckkvUwQ22'
-            const url=`https://api.currencyapi.com/v3/latest?apikey=${key}&currencies=`
-            const ph =`https://api.currencyapi.com/v3/currencies?apikey=${key}&currencies=`
-            const call = await fetch(ph)
-            const answer = await call.json([])
-            // const arrayCurrency= answer.data.map(currency=>{
-            //     console.log(currency);
-            // })
-            console.log([answer]);
+            const url =`https://api.currencyapi.com/v3/currencies?apikey=${key}&currencies=`
+
+            const call = await fetch(url)
+            const answer = await call.json()
+            const arrayCurrency = Object.entries(answer.data).map(([code, currency])=>{
+               return {
+                id: code,
+                name: currency.name
+               }
+            })
+            setCurrency(arrayCurrency)
         }
         readAPI()
     },[])
+
+    const handleSubmit=e=>{
+        e.preventDefault()
+        if([selectedOne,selectedTwo].includes('')){
+            setError(true)
+            return
+        }
+        setError(false)
+        setConverter({
+            selectedOne,
+            selectedTwo
+        })
+    }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}
+
+    >
         <OrigianalCurrency/>
         <ConvertingCurrency/>
+        <input 
+            type="submit" 
+            value='Convert'
+            className="w-full p-2 text-xl uppercase rounded-lg bg-white mt-8 ml-5" />
     </form>
   )
 }

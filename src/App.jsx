@@ -3,11 +3,12 @@ import Header from './components/Header'
 
 
 function App() {
-  
-
+  const [converter, setConverter]=useState({})
   return (
     <>
-      <Header/>
+      <Header
+        setConverter={setConverter}
+      />
     </>
   )
 }
