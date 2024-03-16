@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import useOriginalCurrency from "../hooks/useOriginalCurrency"
 
-export const Form = ({setConverter}) => {
+export const Form = ({setConverter, rate}) => {
     const[currency, setCurrency]=useState([])
     const[error, setError]= useState(false)
     const [selectedOne,OrigianalCurrency]= useOriginalCurrency('From',currency)
@@ -41,16 +41,21 @@ useEffect(()=>{
     }
 
   return (
-    <form onSubmit={handleSubmit}
+    <>
+        <form onSubmit={handleSubmit}
 
-    >
-        <OrigianalCurrency/>
-        <ConvertingCurrency/>
-        <input 
-            type="submit" 
-            value='Convert'
-            className="w-full p-2 text-xl uppercase rounded-lg bg-white mt-8 ml-5" />
-    </form>
+        >
+            <OrigianalCurrency/>
+            <ConvertingCurrency/>
+            <input 
+                type="submit" 
+                value='Convert'
+                className="w-full p-2 text-xl uppercase rounded-lg bg-white mt-8 ml-5" />
+        </form>
+        <div>
+            <p>1{selectedOne}= <span>{rate} {selectedTwo}</span></p>
+        </div>
+    </>
   )
 }
 export default Form
