@@ -52,8 +52,10 @@ useEffect(()=>{
                 value='Convert'
                 className="w-full p-2 text-xl uppercase rounded-lg bg-white mt-8 ml-5" />
         </form>
-        <div>
-            <p>1{selectedOne}= <span>{rate} {selectedTwo}</span></p>
+        <div
+            className="text-white mt-4 text-center"
+        >
+            {rate?<p className="text-2xl">1{selectedOne}= <span className="text-3xl">{rate} {selectedTwo}</span></p>: null}
         </div>
     </>
   )
